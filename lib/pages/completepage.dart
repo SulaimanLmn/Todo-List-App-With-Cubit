@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bloc_test/assets/color.dart';
+import 'package:flutter_bloc_test/cubit/todo_cubit.dart';
+import 'package:flutter_bloc_test/models/todo_model.dart';
 
 class CompletePage extends StatelessWidget {
   const CompletePage({super.key});
@@ -20,49 +23,55 @@ class CompletePage extends StatelessWidget {
       body: Container(
         padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 15),
         width: double.infinity,
-        child: ListView.separated(
-            itemBuilder: (context, index) {
-              return Container(
-                width: double.infinity,
-                height: 82,
-                decoration: BoxDecoration(
-                  color: textColor,
-                  borderRadius: BorderRadius.circular(10),
-                  boxShadow: [
-                    BoxShadow(
-                        color: Colors.black.withOpacity(0.2),
-                        blurRadius: 0.5,
-                        spreadRadius: 0.5,
-                        offset: const Offset(0, 3)),
-                  ],
-                ),
-                child: Container(
-                  padding: const EdgeInsets.all(20),
-                  child: Row(
-                    children: [
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
+        child: BlocBuilder<TodoCubit, List<TodoModel>>(
+          builder: (context, todos) {
+            final CompleteTodos =
+                BlocProvider.of<TodoCubit>(context).getCompletedTodos();
+            return ListView.separated(
+                itemBuilder: (context, index) {
+                  return Container(
+                    width: double.infinity,
+                    height: 82,
+                    decoration: BoxDecoration(
+                      color: textColor,
+                      borderRadius: BorderRadius.circular(10),
+                      boxShadow: [
+                        BoxShadow(
+                            color: Colors.black.withOpacity(0.2),
+                            blurRadius: 0.5,
+                            spreadRadius: 0.5,
+                            offset: const Offset(0, 3)),
+                      ],
+                    ),
+                    child: Container(
+                      padding: const EdgeInsets.all(20),
+                      child: Row(
                         children: [
-                          Text(
-                            "TODO LIST",
-                            style: TextStyle(color: todoTitleColor),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                CompleteTodos[index].title,
+                                style: TextStyle(color: todoTitleColor),
+                              ),
+                              const Spacer(),
+                              Text(CompleteTodos[index].subList),
+                            ],
                           ),
-                          const Spacer(),
-                          const Text("TODO SUB LIST")
                         ],
                       ),
-                    ],
-                  ),
-                ),
-              );
-            },
-            separatorBuilder: (context, index) {
-              return const SizedBox(
-                height: 15,
-              );
-            },
-            itemCount: 5),
+                    ),
+                  );
+                },
+                separatorBuilder: (context, index) {
+                  return const SizedBox(
+                    height: 15,
+                  );
+                },
+                itemCount: CompleteTodos.length);
+          },
+        ),
       ),
     );
   }

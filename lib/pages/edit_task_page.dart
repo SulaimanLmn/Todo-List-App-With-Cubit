@@ -1,16 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bloc_test/assets/color.dart';
+import 'package:flutter_bloc_test/cubit/todo_cubit.dart';
+import 'package:flutter_bloc_test/models/todo_model.dart';
 
 class EditTaskPage extends StatelessWidget {
-  const EditTaskPage({super.key});
+  EditTaskPage({super.key, required this.index, required this.todo});
+
+  final TodoModel todo;
+  final int index;
+  late final titleController = TextEditingController(text: todo.title);
+  late final detailController = TextEditingController(text: todo.subList);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: appBarColor,
+        centerTitle: true,
         title: Text(
-          "Add Task",
+          "Edit Task",
           style: TextStyle(color: textColor, fontWeight: FontWeight.w600),
         ),
       ),
@@ -20,7 +30,8 @@ class EditTaskPage extends StatelessWidget {
         height: 300,
         child: Column(
           children: [
-            const TextField(
+            TextField(
+              controller: titleController,
               decoration: InputDecoration(
                 hintText: "Title",
               ),
@@ -28,7 +39,8 @@ class EditTaskPage extends StatelessWidget {
             const SizedBox(
               height: 35,
             ),
-            const TextField(
+            TextField(
+              controller: detailController,
               decoration: InputDecoration(
                 hintText: "Detail",
               ),
@@ -50,7 +62,12 @@ class EditTaskPage extends StatelessWidget {
                         elevation: 4,
                         shadowColor: Colors.grey.withOpacity(0.7),
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        BlocProvider.of<TodoCubit>(context).updateTodo(index,
+                            title: titleController.text,
+                            subList: detailController.text);
+                        Navigator.of(context).pop();
+                      },
                       child: Padding(
                         padding: const EdgeInsets.symmetric(vertical: 10),
                         child: Text(
@@ -73,7 +90,9 @@ class EditTaskPage extends StatelessWidget {
                         elevation: 4,
                         shadowColor: Colors.grey.withOpacity(0.7),
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
                       child: Padding(
                         padding: const EdgeInsets.symmetric(vertical: 10),
                         child: Text(

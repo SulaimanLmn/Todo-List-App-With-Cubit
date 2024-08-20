@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bloc_test/assets/color.dart';
+import 'package:flutter_bloc_test/cubit/todo_cubit.dart';
 
 class AddTaskPage extends StatelessWidget {
-  const AddTaskPage({super.key});
+  AddTaskPage({super.key});
+
+  final titleController = TextEditingController();
+  final detailController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +25,8 @@ class AddTaskPage extends StatelessWidget {
         height: 300,
         child: Column(
           children: [
-            const TextField(
+            TextField(
+              controller: titleController,
               decoration: InputDecoration(
                 hintText: "Title",
               ),
@@ -28,7 +34,8 @@ class AddTaskPage extends StatelessWidget {
             const SizedBox(
               height: 35,
             ),
-            const TextField(
+            TextField(
+              controller: detailController,
               decoration: InputDecoration(
                 hintText: "Detail",
               ),
@@ -43,7 +50,13 @@ class AddTaskPage extends StatelessWidget {
                 elevation: 4,
                 shadowColor: Colors.grey.withOpacity(0.7),
               ),
-              onPressed: () {},
+              onPressed: () {
+                BlocProvider.of<TodoCubit>(context).addTodo(
+                    title: titleController.text,
+                    subList: detailController.text,
+                    isComplete: false);
+                Navigator.of(context).pop();
+              },
               child: Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 155, vertical: 10),

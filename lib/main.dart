@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:flutter_bloc_test/cubit/nav_cubit.dart';
+import 'package:flutter_bloc_test/cubit/todo_cubit.dart';
 import 'package:flutter_bloc_test/pages/navpage.dart';
 
 void main() {
@@ -13,8 +14,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => NavCubit(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => NavCubit(),
+        ),
+        BlocProvider(
+          create: (context) => TodoCubit(),
+        ),
+      ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
