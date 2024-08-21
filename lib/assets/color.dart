@@ -5,3 +5,5 @@ Color textColor = Colors.white;
 Color screenColor = const Color(0xFFd6d7ef);
 Color todoTitleColor = const Color(0xFFa1a2d9);
 Color iconColor = const Color(0xFFcfd2f4);
+Color confirmButtonColor = Colors.green;
+Color cancelButtonColor = Colors.red;

@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bloc_test/assets/color.dart';
 import 'package:flutter_bloc_test/cubit/todo_cubit.dart';
 import 'package:flutter_bloc_test/models/todo_model.dart';
-import 'package:flutter_bloc_test/pages/addtaskpage.dart';
+import 'package:flutter_bloc_test/pages/add_task_page.dart';
 import 'package:flutter_bloc_test/pages/edit_task_page.dart';
 
 class TodoPage extends StatelessWidget {
@@ -96,8 +96,43 @@ class TodoPage extends StatelessWidget {
                                 ),
                                 GestureDetector(
                                   onTap: () {
-                                    BlocProvider.of<TodoCubit>(context)
-                                        .deleteTodo(originalIndex);
+                                    showDialog(
+                                      context: context,
+                                      builder: (context) => AlertDialog(
+                                        title: const Text("Delete Task"),
+                                        content: const Text(
+                                          "Are you sure you want to delete this task?",
+                                          style: TextStyle(fontSize: 17),
+                                        ),
+                                        actions: [
+                                          TextButton(
+                                            onPressed: () {
+                                              BlocProvider.of<TodoCubit>(
+                                                      context)
+                                                  .deleteTodo(originalIndex);
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: Text(
+                                              "Yes",
+                                              style: TextStyle(
+                                                  color: confirmButtonColor,
+                                                  fontSize: 17),
+                                            ),
+                                          ),
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: Text(
+                                              "Cancel",
+                                              style: TextStyle(
+                                                  color: cancelButtonColor,
+                                                  fontSize: 17),
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    );
                                   },
                                   child: Icon(
                                     Icons.delete_outline,
@@ -106,8 +141,43 @@ class TodoPage extends StatelessWidget {
                                 ),
                                 GestureDetector(
                                   onTap: () {
-                                    BlocProvider.of<TodoCubit>(context)
-                                        .completeTodo(originalIndex);
+                                    showDialog(
+                                      context: context,
+                                      builder: (context) => AlertDialog(
+                                        title: const Text("Complete Task"),
+                                        content: const Text(
+                                          "Are you sure you want to mark this task as complete?",
+                                          style: TextStyle(fontSize: 17),
+                                        ),
+                                        actions: [
+                                          TextButton(
+                                            onPressed: () {
+                                              BlocProvider.of<TodoCubit>(
+                                                      context)
+                                                  .completeTodo(originalIndex);
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: Text(
+                                              "Yes",
+                                              style: TextStyle(
+                                                  color: confirmButtonColor,
+                                                  fontSize: 17),
+                                            ),
+                                          ),
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: Text(
+                                              "Cancel",
+                                              style: TextStyle(
+                                                  color: cancelButtonColor,
+                                                  fontSize: 17),
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    );
                                   },
                                   child: Icon(
                                     Icons.check_box_outlined,

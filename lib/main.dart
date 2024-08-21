@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:flutter_bloc_test/cubit/nav_cubit.dart';
 import 'package:flutter_bloc_test/cubit/todo_cubit.dart';
-import 'package:flutter_bloc_test/pages/navpage.dart';
+import 'package:flutter_bloc_test/pages/nav_page.dart';
 
 void main() {
   runApp(const MyApp());
