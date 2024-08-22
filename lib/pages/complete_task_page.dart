@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bloc_test/assets/color.dart';
+import 'package:flutter_bloc_test/bloc/todo_bloc.dart';
 import 'package:flutter_bloc_test/cubit/todo_cubit.dart';
 import 'package:flutter_bloc_test/models/todo_model.dart';
 
@@ -25,8 +26,8 @@ class CompletePage extends StatelessWidget {
         width: double.infinity,
         child: BlocBuilder<TodoCubit, List<TodoModel>>(
           builder: (context, todos) {
-            final CompleteTodos =
-                BlocProvider.of<TodoCubit>(context).getCompletedTodos();
+            final completedTodo =
+                BlocProvider.of<TodoBloc>(context).getCompletedTodos();
             return ListView.separated(
                 itemBuilder: (context, index) {
                   return Container(
@@ -52,11 +53,11 @@ class CompletePage extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                CompleteTodos[index].title,
+                                completedTodo[index].title,
                                 style: TextStyle(color: todoTitleColor),
                               ),
                               const Spacer(),
-                              Text(CompleteTodos[index].subList),
+                              Text(completedTodo[index].subList),
                             ],
                           ),
                         ],
@@ -69,7 +70,7 @@ class CompletePage extends StatelessWidget {
                     height: 15,
                   );
                 },
-                itemCount: CompleteTodos.length);
+                itemCount: completedTodo.length);
           },
         ),
       ),

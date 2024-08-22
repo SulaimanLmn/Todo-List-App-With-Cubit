@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bloc_test/assets/color.dart';
-import 'package:flutter_bloc_test/cubit/todo_cubit.dart';
+import 'package:flutter_bloc_test/bloc/todo_bloc.dart';
 import 'package:flutter_bloc_test/models/todo_model.dart';
 import 'package:flutter_bloc_test/pages/add_task_page.dart';
 import 'package:flutter_bloc_test/pages/edit_task_page.dart';
@@ -14,32 +14,23 @@ class TodoPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: screenColor,
       appBar: AppBar(
+        centerTitle: true,
         title: Text(
           "TODO APP",
           style: TextStyle(color: textColor, fontWeight: FontWeight.w600),
         ),
         backgroundColor: appBarColor,
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 10),
-            child: Icon(
-              Icons.calendar_today,
-              size: 33,
-              color: textColor,
-            ),
-          ),
-        ],
       ),
       body: Container(
         padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 15),
         width: double.infinity,
-        child: BlocBuilder<TodoCubit, List<TodoModel>>(
+        child: BlocBuilder<TodoBloc, List<TodoModel>>(
           builder: (context, todos) {
-            final nonCompleteTodos =
-                BlocProvider.of<TodoCubit>(context).getNonCompleteTodos();
+            final nonCompletedTodos =
+                BlocProvider.of<TodoBloc>(context).getNonCompleteTodos();
             return ListView.separated(
                 itemBuilder: (context, index) {
-                  final originalIndex = todos.indexOf(nonCompleteTodos[index]);
+                  final originalIndex = todos.indexOf(nonCompletedTodos[index]);
 
                   return Container(
                     width: double.infinity,
@@ -64,11 +55,11 @@ class TodoPage extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                nonCompleteTodos[index].title,
+                                nonCompletedTodos[index].title,
                                 style: TextStyle(color: todoTitleColor),
                               ),
                               const Spacer(),
-                              Text(nonCompleteTodos[index].subList)
+                              Text(nonCompletedTodos[index].subList)
                             ],
                           ),
                           const Spacer(),
@@ -83,7 +74,7 @@ class TodoPage extends StatelessWidget {
                                     Navigator.of(context).push(
                                       MaterialPageRoute(
                                         builder: (context) => EditTaskPage(
-                                          todo: nonCompleteTodos[index],
+                                          todo: nonCompletedTodos[index],
                                           index: originalIndex,
                                         ),
                                       ),
@@ -107,9 +98,10 @@ class TodoPage extends StatelessWidget {
                                         actions: [
                                           TextButton(
                                             onPressed: () {
-                                              BlocProvider.of<TodoCubit>(
-                                                      context)
-                                                  .deleteTodo(originalIndex);
+                                              BlocProvider.of<TodoBloc>(context)
+                                                  .add(TodoDeleted(
+                                                      index: originalIndex));
+
                                               Navigator.of(context).pop();
                                             },
                                             child: Text(
@@ -152,9 +144,10 @@ class TodoPage extends StatelessWidget {
                                         actions: [
                                           TextButton(
                                             onPressed: () {
-                                              BlocProvider.of<TodoCubit>(
-                                                      context)
-                                                  .completeTodo(originalIndex);
+                                              BlocProvider.of<TodoBloc>(context)
+                                                  .add(TodoCompleted(
+                                                      index: originalIndex));
+
                                               Navigator.of(context).pop();
                                             },
                                             child: Text(
@@ -197,7 +190,7 @@ class TodoPage extends StatelessWidget {
                     height: 15,
                   );
                 },
-                itemCount: nonCompleteTodos.length);
+                itemCount: nonCompletedTodos.length);
           },
         ),
       ),

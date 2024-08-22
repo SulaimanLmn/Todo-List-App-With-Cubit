@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bloc_test/assets/color.dart';
-import 'package:flutter_bloc_test/cubit/todo_cubit.dart';
+import 'package:flutter_bloc_test/bloc/todo_bloc.dart';
 import 'package:flutter_bloc_test/models/todo_model.dart';
 
 class EditTaskPage extends StatelessWidget {
@@ -63,9 +63,15 @@ class EditTaskPage extends StatelessWidget {
                         shadowColor: Colors.grey.withOpacity(0.7),
                       ),
                       onPressed: () {
-                        BlocProvider.of<TodoCubit>(context).updateTodo(index,
-                            title: titleController.text,
-                            subList: detailController.text);
+                        BlocProvider.of<TodoBloc>(context).add(
+                          TodoUpdated(
+                            index: index,
+                            todo: TodoModel(
+                                title: titleController.text,
+                                subList: detailController.text,
+                                isComplete: false),
+                          ),
+                        );
                         Navigator.of(context).pop();
                       },
                       child: Padding(

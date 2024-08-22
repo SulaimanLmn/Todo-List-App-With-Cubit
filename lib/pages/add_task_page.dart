@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bloc_test/assets/color.dart';
-import 'package:flutter_bloc_test/cubit/todo_cubit.dart';
+import 'package:flutter_bloc_test/bloc/todo_bloc.dart';
+import 'package:flutter_bloc_test/models/todo_model.dart';
 
 class AddTaskPage extends StatelessWidget {
   AddTaskPage({super.key});
@@ -14,6 +15,7 @@ class AddTaskPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: appBarColor,
+        centerTitle: true,
         title: Text(
           "Add Task",
           style: TextStyle(color: textColor, fontWeight: FontWeight.w600),
@@ -27,7 +29,7 @@ class AddTaskPage extends StatelessWidget {
           children: [
             TextField(
               controller: titleController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 hintText: "Title",
               ),
             ),
@@ -36,7 +38,7 @@ class AddTaskPage extends StatelessWidget {
             ),
             TextField(
               controller: detailController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 hintText: "Detail",
               ),
             ),
@@ -51,10 +53,14 @@ class AddTaskPage extends StatelessWidget {
                 shadowColor: Colors.grey.withOpacity(0.7),
               ),
               onPressed: () {
-                BlocProvider.of<TodoCubit>(context).addTodo(
-                    title: titleController.text,
-                    subList: detailController.text,
-                    isComplete: false);
+                BlocProvider.of<TodoBloc>(context).add(
+                  TodoAdded(
+                    todo: TodoModel(
+                        title: titleController.text,
+                        subList: detailController.text,
+                        isComplete: false),
+                  ),
+                );
                 Navigator.of(context).pop();
               },
               child: Padding(

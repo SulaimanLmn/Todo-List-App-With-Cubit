@@ -40,7 +40,7 @@ class TodoCubit extends Cubit<List<TodoModel>> {
     updatedTodos[index] = TodoModel(
       title: todo.title,
       subList: todo.subList,
-      isComplete: true, // Set to true to mark as complete
+      isComplete: true,
     );
 
     emit(updatedTodos);

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_bloc_test/bloc/nav_bloc.dart';
 
 import 'package:flutter_bloc_test/cubit/nav_cubit.dart';
+import 'package:flutter_bloc_test/bloc/todo_bloc.dart';
 import 'package:flutter_bloc_test/cubit/todo_cubit.dart';
 import 'package:flutter_bloc_test/pages/nav_page.dart';
 
@@ -17,10 +19,16 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => NavCubit(),
+          create: (_) => NavCubit(),
         ),
         BlocProvider(
-          create: (context) => TodoCubit(),
+          create: (_) => TodoCubit(),
+        ),
+        BlocProvider(
+          create: (_) => TodoBloc(),
+        ),
+        BlocProvider(
+          create: (_) => NavBloc(),
         ),
       ],
       child: MaterialApp(
