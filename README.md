@@ -1,4 +1,4 @@
-# TodoList App With Cubit
+# TodoList App With Bloc
 
 A new Flutter project.
 
